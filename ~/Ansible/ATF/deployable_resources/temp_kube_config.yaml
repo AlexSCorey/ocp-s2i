@@ -1,0 +1,24 @@
+apiVersion: v1
+clusters:
+- cluster:
+    insecure-skip-tls-verify: true
+    server: https://api.aap-test-v417-x86-64-p74lx.ocp4.testing.ansible.com:6443
+  name: api-aap-test-v417-x86-64-p74lx-ocp4-testing-ansible-com:6443
+contexts:
+- context:
+    cluster: api-aap-test-v417-x86-64-p74lx-ocp4-testing-ansible-com:6443
+    namespace: acorey
+    user: kube:admin/api-aap-test-v417-x86-64-p74lx-ocp4-testing-ansible-com:6443
+  name: acorey/api-aap-test-v417-x86-64-p74lx-ocp4-testing-ansible-com:6443/kube:admin
+- context:
+    cluster: api-aap-test-v417-x86-64-p74lx-ocp4-testing-ansible-com:6443
+    namespace: default
+    user: kube:admin/api-aap-test-v417-x86-64-p74lx-ocp4-testing-ansible-com:6443
+  name: default/api-aap-test-v417-x86-64-p74lx-ocp4-testing-ansible-com:6443/kube:admin
+current-context: acorey/api-aap-test-v417-x86-64-p74lx-ocp4-testing-ansible-com:6443/kube:admin
+kind: Config
+preferences: {}
+users:
+- name: kube:admin/api-aap-test-v417-x86-64-p74lx-ocp4-testing-ansible-com:6443
+  user:
+    token: sha256~_QuO42VaX7i4eMtKt1o2M3BNk4ucH2TS06SX0jERWzw

@@ -1,0 +1,78 @@
+---
+apiVersion: v1
+kind: ImageStream
+metadata:
+  name: todo-frontend
+spec:
+  lookupPolicy:
+    local: false
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: todo-frontend
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: todo-frontend:latest
+  source:
+    type: Git
+    git:
+      uri: https://github.com/YOUR-USERNAME/YOUR-REPO.git
+    contextDir: frontend
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: nginx:latest
+        namespace: openshift
+  triggers:
+  - type: ConfigChange
+  - type: ImageChange
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-frontend
+  template:
+    metadata:
+      labels:
+        app: todo-frontend
+    spec:
+      containers:
+      - name: todo-frontend
+        image: todo-frontend:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: API_URL
+          value: "http://todo-api:5000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-frontend
+spec:
+  selector:
+    app: todo-frontend
+  ports:
+  - port: 8080
+    targetPort: 8080
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: todo-frontend
+spec:
+  to:
+    kind: Service
+    name: todo-frontend
+  port:
+    targetPort: 8080
